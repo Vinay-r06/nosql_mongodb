@@ -4,13 +4,15 @@ const mongodb=require('mongodb');
 const getDb=require('../util/database').getDb;
 
 class Product {
-constructor(title,imageUrl, price, description,id){
+constructor(title,imageUrl, price, description,id,userId){
   this.title=title;
   this.imageUrl=imageUrl;
   this.price=price;
   this.description=description;
+  
  
   this._id=id ? new mongodb.ObjectId(id) : null;                // now this will objectid
+  this.userId=userId;
 }
 save(){ 
                                        // we had database , collections, documents
@@ -52,7 +54,7 @@ static findById(prodId){
   const db= getDb();
   return db.collection('products').find({_id: new mongodb.ObjectId(prodId)}).next()      // in mongodb id will be objectId in string format all special charaters is there so import mongodb and access objectid to access id..       // since find - will give cursor..moongodb will not know i am accessing 1 product..so i will put "next"
   .then(product =>{
-    console.log(product);
+    console.log(product, 'findById>>');
     return product;
   })
   .catch(err=>{
