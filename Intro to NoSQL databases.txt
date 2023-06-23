@@ -1,0 +1,110 @@
+building the apps need- rdbms.
+whenever needs scale - nosql databases.
+
+youtube, stack overflow, instagram, whatsapp - uses rdbms..
+
+nearly all tehe apps mentioned probably use nosql for analytics.
+their core functionalities run on RDBMS though (expect instagram as per blogposts on highscalabilty)..
+
+
+
+diff btw sql and nosql
+
+in sql 
+we store info a person in table all...if there is any column(address) complicated we use store new table by mapping foriegn key..
+
+
+
+in nosql:
+
+we had only 2 cloumns ..ID , value
+
+in value 
+we had big blob of data...this is JSON({})..
+stores like cloumn name and maps to a value...{name:john}
+here null value will not store..
+
+
+
+
+how nosql efficient: the main is how we store and retrieving data.. 
+
+here we store data at a time cant do later of any cloumn..
+when there is inseration all the field will inserted together..
+
+advantages of nosql:
+
+
+1) inseration and retrieve the whole blob..
+
+here all the information will get in cheaper..
+but when sql we to access all the dat we to do "joins"  for not normalizes cloumn like adddres.. this is expensive operation..
+
+2)schema is easyly changeble: 
+   nosql schema is flexible..if address is null..doesnt care..it doesnt care abt schema..its care abt "json document"...
+   but in sql we leave some column "null" in address -distict-null.. example..we dont need that but we still do
+   
+   in sql when new attribute added--> when added we want to add new column to this sql database very expensive operation..u need some logs on table..
+   for consistency u need logs otherwise its risk to maintain consistency..
+
+   but in nosql..when adding new one..dont need old users..older schema doest know abt the new column...
+
+
+ 3)built for scale: nosql-- they have horizontal partitioing inbuilt (focus on availabilty)..lot of systems actually require availablity over consistency..
+
+
+4) built for aggregation/ metrics:  like average age, salary..expecting database are built for finding metrics.. 
+
+
+
+disadvantages of nosql:
+nosql:
+1) not built for updates(consistencyis is problem , acid is not guranted):    (updates= delete + insert) 
+           problems: the data may not be consistency- two nodes may have different data for the same id( remember we add salary column it will not consider old users..)
+           in sql it will give some "ACID properties" by which u can contain this issue..
+in nosql if acid is not guranted u cant have transactions using nosql databases
+atleast u cant have same transactions properties of acid..(financial systems dont use nosql database for their transaction)
+
+2) this nosql are not read optimized  or slower:
+
+in nosql if we want access age.. this will read all till age column available and return..
+but in sql it will go to age column compare nosql it will read or reach age column more efficient in sql..
+
+3)relational are not implicit: in nosql this does not have implicit information about relations..
+but in rdbms its relational..(it maps adddress in another table using foriegnkey)
+
+4) joins are hard:
+
+when u had 2 nosql table...then same column can merge 
+but in sql it will be easy using "joins"
+
+when to use nosql:
+if u r data is block
+and if u r making few updated
+and keep all of them together
+lot of right optimazations
+
+
+advantages:
+
+1.inseration and retreivals is easy..
+2.scheme is easily changeble
+3.built for scale
+4.built for metrics/analysis/aggregation
+
+
+disadvantages:
+
+1. not built for updates(consistensy (acid))
+2. read time are slower
+3. relation are not implicit.
+4. joins are hard
+
+
+
+cassandra database as example:
+
+
+one node has to much pressure--when hash function has not really nice..
+
+so u can create new cluster in that node..in that had 5 node..this is called multi level sharding..
